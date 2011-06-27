@@ -1,0 +1,123 @@
+10
+
+dir
+1170
+https://svn.tainengmiao.com/svn/cruise/trunk/nodecoffee
+https://svn.tainengmiao.com/svn/cruise
+
+
+
+2011-06-27T09:01:55.832125Z
+1170
+qiudi
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+a55a2200-97a1-a646-8280-1f95676e06b9
+
+pids
+dir
+
+test
+dir
+
+package.json
+file
+1169
+
+
+
+2011-06-27T08:59:33.000000Z
+1a2ed774d784277d0907f8611ce76c94
+2011-06-27T08:43:52.363375Z
+1167
+qiudi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+126
+
+logs
+dir
+
+lib
+dir
+
+coffee
+dir
+
+app.js
+file
+1169
+
+
+
+2011-06-27T08:59:33.000000Z
+3bc4de5c16c90673fbff9be2d89f0866
+2011-06-27T08:43:52.363375Z
+1167
+qiudi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+783
+
+js
+dir
+
+node_modules
+dir
+
+views
+dir
+
+public
+dir
+
