@@ -44,10 +44,9 @@ data.db.buildFindQuery = (q, callback) ->
 	
 	if !query.query
 		query = 
-			query: {},
-		
+			query: {}		
 	
-	if q.limit is undefined or 'number' isnt typeof q.limit 
+	if not q.limit? or 'number' isnt typeof q.limit 
     query.limit = APP_CONFIG.QUERY_DEFAULT_LIMIT;
   else 
     query.limit = q.limit;	
@@ -57,6 +56,21 @@ data.db.buildFindQuery = (q, callback) ->
 	query.sort = q.sort || {};
 
 	if ('function' is typeof callback) then callback(query) else return query;
+
+data.db.count = (collection, query, callback)-> 
+	data.db.collectionOperation(collection, 'count', query, callback)
+
+
+data.db.distinct = (collection, field, query, callback) ->
+	this.db.collection(collection, (err, collection) ->
+		console.error(err.stack) if err 
+
+		collection.distinct(field, query, (err, result)-> 
+			console.error(err.stack) if err 
+			if ('function' is typeof callback) then callback(result) else return result
+		);
+	);
+
 
 
 
