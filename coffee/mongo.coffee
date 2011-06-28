@@ -10,6 +10,11 @@ data.db.db = null;
 data.db.dbName = '';
 data.db.collection = '';
 
+###
+Open database
+@mongoInfo 
+@callback
+###
 data.db.open = (mongoInfo, callback) -> 
 	util.log('Open database');
 	@dbName = mongoInfo.dbName;
@@ -22,11 +27,13 @@ data.db.open = (mongoInfo, callback) ->
 	return this;
 
 data.db.close = (callback)->
-  if data.db.db
+  util.log 'Close database'
+  if data.db.db 
     data.db.db.close (err, callback)->
+      console.log 'Closing'
       if err
         console.error(err.stack)
-			if 'function' is typeof callback then callback(true)      
+			if 'function' is typeof callback then callback()  
 
 data.db.isClosed = ()->
   not data.db.db
@@ -35,14 +42,12 @@ data.db.save = (collection, doc, callback) ->
 	data.db.collectionOperation(collection, 'save', doc, callback);
 
 data.db.collectionOperation = (collection, operation, query, callback) ->
-	this.db.collection(collection, (err, collection) ->
+  @db.collection collection, (err, collection) ->
     console.error(err.stack) if err
-		collection[operation](query, (err, result) ->
-			if err
-			  console.error(err.stack)
-			if 'function' is typeof callback then callback(result) else return result			
-		)
-	)
+    collection[operation] query, (err, result) ->
+	    if err
+	      console.error(err.stack)
+	    if 'function' is typeof callback then callback(result) else return result			
 
 data.db.buildFindQuery = (q, callback) ->	
 	q = {} if not q?
@@ -64,8 +69,9 @@ data.db.buildFindQuery = (q, callback) ->
 
 	if ('function' is typeof callback) then callback(query) else return query;
 
-data.db.count = (collection, query, callback)-> 
-	data.db.collectionOperation(collection, 'count', query, callback)
+data.db.count = (collection, query, callback) -> 
+  data.db.collectionOperation(collection, 'count', query, callback)
+
 
 
 data.db.distinct = (collection, field, query, callback) ->

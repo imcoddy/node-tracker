@@ -2,11 +2,17 @@ APP_CONFIG = require('../config')
 
 app = require('../mongo')
 assert = require('assert')
-
+query = {}
 
 module.exports = 
+  'setup':()->
+    console.log 'setup'
+    app.open
+      dbName: APP_CONFIG.DATABASE.DB_NAME
+      
   'test buildFindQuery':()->
-    query
+    console.log 'test buildFindQuery' 
+    query = {};
     DEFAULT_QUERY_LIMIT = 20; 
     DEFAULT_QUERY_SKIP = 0;  		
     query= app.buildFindQuery();
@@ -70,16 +76,27 @@ module.exports =
     assert.eql({},query.sort);
     assert.eql({uid:1,time:1},query.fields);   
   
-#  'test count':()->
-#    query
-
-#  'test open':()->
-#    app.close()
-#    assert.equal true,app.isClosed()
-#    app.open
-#    	dbName: APP_CONFIG.DATABASE.DB_NAME,
-#    assert.equal false,app.isClosed()
-#    app.close()
-#    assert.equal true,app.isClosed()
+  'test count':()->
+    app.open
+      dbName: APP_CONFIG.DATABASE.DB_NAME,()->    
+        console.log 'test count'
+        query = {};  
+        collection = 'test'
+        app.count(collection,query,(result)->assert.eql(0,result))
+        
+        collection = 'records'
+        app.count(collection,query,(result)->assert.eql(9,result))
+        
+        query = {tag:'login'}
+        app.count(collection,query,(result)->assert.eql(7,result))
+        
+        query = {tag:'register'}
+        app.count(collection,query,(result)->assert.eql(2,result))
+        
+        query = {tag:'Login'}
+        app.count(collection,query,(result)->assert.eql(0,result))
+        
+        
+        app.close();
 
 
