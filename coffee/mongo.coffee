@@ -71,6 +71,43 @@ data.db.distinct = (collection, field, query, callback) ->
 		);
 	);
 
+data.db.find = (collection, queryArgs, callback) ->
+	this.db.collection(collection, (err, collection) ->
+		if (err) 
+			console.error(err.stack)
+
+		collection.find(queryArgs.query, queryArgs.field, queryArgs.skip, queryArgs.limit, (err, cursor) -> 
+			if (err) 
+				console.error(err.stack)
+
+			if (queryArgs.sort) 
+			  cursor = cursor.sort(queryArgs.sort)
+			if ('function' is typeof callback) 
+			  data.onFindCursor(err, cursor, callback)
+			else 
+			  return data.onFindCursor(err, cursor);
+		);
+	);
+
+
+data.db.findOne = (collection, query, callback)->
+	query.limit = 1;
+	this.find(collection, query, callback);
+
+
+data.onFindCursor = (err, cursor, callback) ->
+	if (err)
+		console.error(err.stack);
+
+	if ('function' is typeof callback) 
+		cursor.toArray (err, items)-> 
+			if (err) 
+				console.error(err.stack);
+			
+			callback(items);
+
+	else return cursor.toArray();
+
 
 
 
