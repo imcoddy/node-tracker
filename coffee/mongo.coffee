@@ -37,10 +37,16 @@ data.db.close = (callback)->
 
 data.db.isClosed = ()->
   not data.db.db
-  
+
+###
+Save a document into the collection specified
+###  
 data.db.save = (collection, doc, callback) -> 
 	data.db.collectionOperation(collection, 'save', doc, callback);
 
+###
+Remove all documents in the collection specified
+###  
 data.db.remove = (collection, callback) -> 
 	data.db.collectionOperation(collection, 'remove', callback);
 	
