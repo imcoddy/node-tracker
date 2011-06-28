@@ -95,7 +95,7 @@ data.db.distinct = (collection, field, query, callback) ->
 
 data.db.find = (collection, queryArgs, callback) ->
   @buildFindQuery queryArgs,(query)->
-      console.info query;
+#      console.info query;
       @db.collection(collection, (err, collection) ->
         if (err) 
 	        console.error(err.stack)
@@ -127,9 +127,7 @@ data.onFindCursor = (err, cursor, callback) ->
 		cursor.toArray (err, items)-> 
 			if (err) 
 				console.error(err.stack);
-# todo handle empty array
 			callback(items);
-
 	else return cursor.toArray();
 
 
