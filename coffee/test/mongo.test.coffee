@@ -3,6 +3,7 @@ APP_CONFIG = require('../config')
 app = require('../mongo')
 assert = require('assert')
 query = {}
+delay = (ms, func) -> setTimeout func, ms
 
 module.exports = 
   'setup':()->
@@ -94,9 +95,24 @@ module.exports =
         app.count(collection,query,(result)->assert.eql(2,result))
         
         query = {tag:'Login'}
-        app.count(collection,query,(result)->assert.eql(0,result))
-        
+        app.count(collection,query,(result)->assert.eql(0,result))        
         
         app.close();
 
+  'test save':()->
+    app.open
+      dbName: APP_CONFIG.DATABASE.DB_NAME,()->    
+        console.log 'test save'
+        collection = 'test'
+        app.count collection,query,(count)->
+          doc = 
+            name:1
+            value :2
+          app.save collection,doc,()-> 
+            app.count collection,query,(result)->
+              assert.eql count,result
+              app.close(); 
+  
+#  'test teardown':()->
+#    delay 1000,->app.close()
 
