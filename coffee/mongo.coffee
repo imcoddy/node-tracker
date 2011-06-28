@@ -41,6 +41,9 @@ data.db.isClosed = ()->
 data.db.save = (collection, doc, callback) -> 
 	data.db.collectionOperation(collection, 'save', doc, callback);
 
+data.db.remove = (collection, callback) -> 
+	data.db.collectionOperation(collection, 'remove', callback);
+	
 data.db.collectionOperation = (collection, operation, query, callback) ->
   @db.collection collection, (err, collection) ->
     console.error(err.stack) if err
