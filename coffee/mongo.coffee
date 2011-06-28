@@ -21,8 +21,15 @@ data.db.open = (mongoInfo, callback) ->
 	);
 	return this;
 
-data.db.close = ()->
-  data.db.db.close() if data.db.db
+data.db.close = (callback)->
+  if data.db.db
+    data.db.db.close (err, callback)->
+      if err
+        console.error(err.stack)
+			if 'function' is typeof callback then callback(true)      
+
+data.db.isClosed = ()->
+  not data.db.db
   
 data.db.save = (collection, doc, callback) -> 
 	data.db.collectionOperation(collection, 'save', doc, callback);
