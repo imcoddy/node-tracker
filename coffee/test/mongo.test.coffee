@@ -98,16 +98,39 @@ module.exports =
         query = {tag:'Login'}
         app.count(collection,query,(result)->assert.eql(0,result))        
         
-        console.log 'test save'
-        collection = 'test'
-        app.count collection,query,(count)->
-          doc = 
-            name:1
-            value :2
-          app.save collection,doc,()-> 
-            app.count collection,query,(result)->
-              assert.eql count,result
-
+        
+#        console.log 'test save'
+#        collection = 'test'
+#        query = {}
+#        app.count collection,query,(count)->
+#          doc = 
+#            name:1
+#            value :2
+#          app.save collection,doc,()-> 
+#            app.count collection,query,(result)->
+#              assert.eql count,result
+        
+        
+        console.log 'test find'
+        query = {}
+        collection ='records'
+        app.find(collection,query, (result)->assert.length(result,9))
+        
+        query = {query:{tag:'login'}}
+        app.find(collection,query, (result)->assert.length(result,7))
+        
+        query = {query:{app_id:'facebook_valley'}}
+        app.find(collection,query, (result)->assert.length(result,1))
+        
+        query = {query:{tag:'login',app_id:'facebook_valley'}}
+        app.find(collection,query, (result)->assert.length(result,1))
+        
+        query = {query:{tag:'login', app_id:'xiaonei_valley'}}
+        app.find(collection,query, (result)->assert.length(result,6))
+                
+        query = {query:{app_id:'NO_SUCH_ID'}}
+        app.find(collection,query, (result)->assert.length(result,0))
+        
 #  'test save':()->
 #    app.open
 #      dbName: APP_CONFIG.DATABASE.DB_NAME,()->    

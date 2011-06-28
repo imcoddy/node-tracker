@@ -94,22 +94,24 @@ data.db.distinct = (collection, field, query, callback) ->
 	);
 
 data.db.find = (collection, queryArgs, callback) ->
-	this.db.collection(collection, (err, collection) ->
-		if (err) 
-			console.error(err.stack)
+  @buildFindQuery queryArgs,(query)->
+      console.info query;
+      @db.collection(collection, (err, collection) ->
+        if (err) 
+	        console.error(err.stack)
 
-		collection.find(queryArgs.query, queryArgs.field, queryArgs.skip, queryArgs.limit, (err, cursor) -> 
-			if (err) 
-				console.error(err.stack)
+        collection.find(query.query, query.field, query.skip, query.limit, (err, cursor) -> 
+	        if (err) 
+		        console.error(err.stack)
 
-			if (queryArgs.sort) 
-			  cursor = cursor.sort(queryArgs.sort)
-			if ('function' is typeof callback) 
-			  data.onFindCursor(err, cursor, callback)
-			else 
-			  return data.onFindCursor(err, cursor);
-		);
-	);
+	        if (query.sort) 
+	          cursor = cursor.sort(query.sort)
+	        if ('function' is typeof callback) 
+	          data.onFindCursor(err, cursor, callback)
+	        else 
+	          return data.onFindCursor(err, cursor);
+        );
+      );
 
 
 data.db.findOne = (collection, query, callback)->
@@ -125,7 +127,7 @@ data.onFindCursor = (err, cursor, callback) ->
 		cursor.toArray (err, items)-> 
 			if (err) 
 				console.error(err.stack);
-			
+# todo handle empty array
 			callback(items);
 
 	else return cursor.toArray();
