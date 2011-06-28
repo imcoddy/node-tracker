@@ -83,7 +83,8 @@ module.exports =
         console.log 'test count'
         query = {};  
         collection = 'test'
-        app.count(collection,query,(result)->assert.eql(0,result))
+        app.remove collection, ->
+          app.count(collection,query,(result)->assert.eql(0,result))
         
         collection = 'records'
         app.count(collection,query,(result)->assert.eql(9,result))
@@ -97,11 +98,6 @@ module.exports =
         query = {tag:'Login'}
         app.count(collection,query,(result)->assert.eql(0,result))        
         
-        app.close();
-
-  'test save':()->
-    app.open
-      dbName: APP_CONFIG.DATABASE.DB_NAME,()->    
         console.log 'test save'
         collection = 'test'
         app.count collection,query,(count)->
@@ -111,8 +107,13 @@ module.exports =
           app.save collection,doc,()-> 
             app.count collection,query,(result)->
               assert.eql count,result
-              app.close(); 
+
+#  'test save':()->
+#    app.open
+#      dbName: APP_CONFIG.DATABASE.DB_NAME,()->    
+#        
+#              app.close(); 
   
-#  'test teardown':()->
-#    delay 1000,->app.close()
+  'test teardown':()->
+    delay 1000,->app.close()
 
