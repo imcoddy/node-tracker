@@ -116,17 +116,17 @@ Return an array of distinct value according to the query
 @callback
 ###
 data.db.distinct = (collection, field, query, callback) ->
-  query ?={}
-	@db.collection collection, (err, collection) ->
-		if err
-	    console.error(err.stack)
-	    throw err 
+  query ?={};
+  @db.collection collection, (err, collection) ->
+	  if err
+      console.error(err.stack)
+      throw err 
 
-		collection.distinct field, query, (err, result)-> 
-			if err
-	      console.error(err.stack)
-	      throw err 
-			if ('function' is typeof callback) then callback(result) else return result
+	  collection.distinct field, query, (err, result)-> 
+		  if err
+        console.error(err.stack)
+        throw err 
+		  if ('function' is typeof callback) then callback(result) else return result
 
 ###
 Find in a collection, note that the queryArgs should follow some rules
