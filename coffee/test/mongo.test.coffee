@@ -97,20 +97,7 @@ module.exports =
         
         query = {tag:'Login'}
         app.count(collection,query,(result)->assert.eql(0,result))        
-        
-        
-#        console.log 'test save'
-#        collection = 'test'
-#        query = {}
-#        app.count collection,query,(count)->
-#          doc = 
-#            name:1
-#            value :2
-#          app.save collection,doc,()-> 
-#            app.count collection,query,(result)->
-#              assert.eql count,result
-        
-        
+     
         console.log 'test find'
         query = {}
         collection ='records'
@@ -130,6 +117,18 @@ module.exports =
                 
         query = {query:{app_id:'NO_SUCH_ID'}}
         app.find(collection,query, (result)->assert.length(result,0))
+        
+        console.log 'test save'
+        collection = 'test'
+        query = {}
+        app.count collection,query,(count)->
+          doc = 
+            name:1
+            value :2
+          app.save collection,doc,()-> 
+            console.log 'save in '+collection
+            app.count collection,query,(result)->
+              assert.eql count+1,result
         
 #  'test save':()->
 #    app.open
