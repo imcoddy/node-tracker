@@ -80,12 +80,8 @@ A util to build the query for finding
 ###
 data.db.buildFindQuery = (q, callback) ->	
 	q ?= {}
-	query = q if q?
-	
-	if !query.query
-		query = 
-			query: {}		
-	
+	query = {}
+
 	if not q.limit? or 'number' isnt typeof q.limit 
     query.limit = APP_CONFIG.QUERY_DEFAULT_LIMIT;
   else 
@@ -94,7 +90,16 @@ data.db.buildFindQuery = (q, callback) ->
 	query.fields = q.fields || {};
 	query.skip = q.skip || 0;
 	query.sort = q.sort || {};
+	
+	QUERY_PROPERTIES = ['limit','fields','skip','sort']
+	for i in QUERY_PROPERTIES 
+	  delete q[i] if q[i]?
 
+  if q.query?
+    query.query = q.query
+  else
+    query.query = q
+		
 	if ('function' is typeof callback) then callback(query) else return query;
 	
 ###
@@ -141,9 +146,15 @@ data.db.find = (collection, queryArgs, callback) ->
 	        else 
 	          return data.onFindCursor(err, cursor);
 
+###
+Find the first record in collection
+###
 data.db.findOne = (collection, query, callback)->
-	query.limit = 1;
-	this.find(collection, query, callback);
+  query ?={};
+  query.limit = 1;
+#  console.log 'find only one'
+#  console.log query
+  data.db.find(collection, query, callback);
 
 
 data.onFindCursor = (err, cursor, callback) ->

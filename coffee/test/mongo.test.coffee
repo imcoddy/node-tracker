@@ -86,6 +86,8 @@ module.exports =
         app.remove collection, ->
           app.count(collection,query,(result)->assert.eql(0,result))
         
+        app.count('apps',{},(result)->assert.eql(2,result))
+        
         collection = 'records'
         app.count(collection,query,(result)->assert.eql(9,result))
         
@@ -117,6 +119,20 @@ module.exports =
                 
         query = {query:{app_id:'NO_SUCH_ID'}}
         app.find(collection,query, (result)->assert.length(result,0))
+        
+        console.log 'test find one'
+        collection ='records'
+        query={}
+        app.findOne collection,query, (result)->assert.length(result,1)
+        
+        query={app_id:'facebook_valley'}
+        app.findOne collection,query, (result)->
+          assert.length(result,1)
+          console.log result[0].app_id
+          assert.eql 'facebook_valley',result[0].app_id
+          
+        
+        
         
         console.log 'test save'
         collection = 'test'
