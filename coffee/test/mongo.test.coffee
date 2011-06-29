@@ -76,6 +76,10 @@ module.exports =
     assert.eql(DEFAULT_QUERY_LIMIT,query.limit);   		
     assert.eql({},query.sort);
     assert.eql({uid:1,time:1},query.fields);   
+    
+    query = app.buildFindQuery({fields:{uid:1,time:1}});
+    assert.eql({fields:{uid:1,time:1}},query.query);
+    console.log query
   
   'test count':()->
     app.open
