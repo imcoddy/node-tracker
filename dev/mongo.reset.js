@@ -1,4 +1,5 @@
 db.apps.remove();
+db.test.remove();
 db.records.remove();
 db.apps.dropIndexes();
 db.records.dropIndexes();
