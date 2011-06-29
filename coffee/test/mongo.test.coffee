@@ -128,12 +128,24 @@ module.exports =
         query={app_id:'facebook_valley'}
         app.findOne collection,query, (result)->
           assert.length(result,1)
-          console.log result[0].app_id
-          assert.eql 'facebook_valley',result[0].app_id
+          assert.eql 'facebook_valley',result[0].app_id          
+        
+        console.log 'test distinct'
+        collection = 'apps'
+        field = 'platform'
+        query = {}        
+        app.distinct collection, field, query, (result)->
+          assert.length(result,2)
+          assert.includes result,'facebook'
+          assert.includes result,'xiaonei'
+        
+        collection = 'records'
+        field = 'uid'
+        query = {}        
+        app.distinct collection, field, query, (result)->
+          assert.length(result,7)       
           
-        
-        
-        
+                  
         console.log 'test save'
         collection = 'test'
         query = {}

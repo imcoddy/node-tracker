@@ -108,10 +108,16 @@ Count in a collection
 data.db.count = (collection, query, callback) -> 
   data.db.collectionOperation(collection, 'count', query, callback)
 
-
-
+###
+Return an array of distinct value according to the query
+@collection
+@field which field to distinct on
+@query query to limit the result
+@callback
+###
 data.db.distinct = (collection, field, query, callback) ->
-	this.db.collection collection, (err, collection) ->
+  query ?={}
+	@db.collection collection, (err, collection) ->
 		if err
 	    console.error(err.stack)
 	    throw err 
@@ -152,11 +158,11 @@ Find the first record in collection
 data.db.findOne = (collection, query, callback)->
   query ?={};
   query.limit = 1;
-#  console.log 'find only one'
-#  console.log query
   data.db.find(collection, query, callback);
 
-
+###
+On find cursor return
+###
 data.onFindCursor = (err, cursor, callback) ->
 	if (err)
 		console.error(err.stack)
