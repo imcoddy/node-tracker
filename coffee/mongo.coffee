@@ -76,7 +76,9 @@ data.db.collectionOperation = (collection, operation, query, callback) ->
 	    if 'function' is typeof callback then callback(result) else return result			
 
 ###
-A util to build the query for finding
+A util to build the query for finding, The format of query is as follow:
+please put the original query in q.query
+avoid using limit, fields, skip and sort as property of q
 ###
 data.db.buildFindQuery = (q, callback) ->	
 	q ?= {}
@@ -130,7 +132,7 @@ data.db.distinct = (collection, field, query, callback) ->
 
 ###
 Find in a collection, note that the queryArgs should follow some rules
-@queryArgs arguments for finding.
+@queryArgs arguments for finding. 
 ###
 data.db.find = (collection, queryArgs, callback) ->
   @buildFindQuery queryArgs,(query)->
@@ -175,6 +177,10 @@ data.onFindCursor = (err, cursor, callback) ->
 				throw err 
 			callback(items);
 	else return cursor.toArray();
+	
+#todo
+#data.db.findAndModify (collection, query, callback) ->
+#	data.db.collectionOperation(collection, 'findAndModify', query, callback);
 
 
 
