@@ -79,8 +79,7 @@ data.db.collectionOperation = (collection, operation, query, callback) ->
 A util to build the query for finding
 ###
 data.db.buildFindQuery = (q, callback) ->	
-	q = {} if not q?
-	
+	q ?= {}
 	query = q if q?
 	
 	if !query.query
