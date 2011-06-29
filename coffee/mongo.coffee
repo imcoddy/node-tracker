@@ -19,12 +19,15 @@ data.db.open = (mongoInfo, callback) ->
 	util.log('Open database');
 	@dbName = mongoInfo.dbName;
 	@db = new mongo.Db(mongoInfo.dbName, new mongo.Server(data.db.server, data.db.port, {}), {}) if !@db
-	@db.open( (err, db) -> 
-		console.error(err.stack) if err
-		@db = db;
-		callback(db) if 'function' is typeof callback;
-	);
-	return this;
+	@db.open (err, db) -> 
+    if err
+      console.error(err.stack)
+      throw err
+    @db = db;
+    if 'function' is typeof callback
+	    callback(db) 
+    else
+	    return this;
 
 data.db.close = (callback)->
   util.log 'Close database'
@@ -33,6 +36,7 @@ data.db.close = (callback)->
       console.log 'Closing'
       if err
         console.error(err.stack)
+        throw err
 			if 'function' is typeof callback then callback()  
 
 data.db.isClosed = ()->
@@ -52,10 +56,14 @@ data.db.remove = (collection, callback) ->
 	
 data.db.collectionOperation = (collection, operation, query, callback) ->
   @db.collection collection, (err, collection) ->
-    console.error(err.stack) if err
+    if err
+	    console.error(err.stack)
+	    throw err
+	    
     collection[operation] query, (err, result) ->
 	    if err
 	      console.error(err.stack)
+	      throw err
 	    if 'function' is typeof callback then callback(result) else return result			
 
 data.db.buildFindQuery = (q, callback) ->	
@@ -85,10 +93,14 @@ data.db.count = (collection, query, callback) ->
 
 data.db.distinct = (collection, field, query, callback) ->
 	this.db.collection(collection, (err, collection) ->
-		console.error(err.stack) if err 
+		if err
+	    console.error(err.stack)
+	    throw err 
 
 		collection.distinct(field, query, (err, result)-> 
-			console.error(err.stack) if err 
+			if err
+	      console.error(err.stack)
+	      throw err 
 			if ('function' is typeof callback) then callback(result) else return result
 		);
 	);
@@ -99,10 +111,12 @@ data.db.find = (collection, queryArgs, callback) ->
       @db.collection(collection, (err, collection) ->
         if (err) 
 	        console.error(err.stack)
+	        throw err 
 
         collection.find(query.query, query.field, query.skip, query.limit, (err, cursor) -> 
 	        if (err) 
 		        console.error(err.stack)
+		        throw err 
 
 	        if (query.sort) 
 	          cursor = cursor.sort(query.sort)
@@ -121,12 +135,14 @@ data.db.findOne = (collection, query, callback)->
 
 data.onFindCursor = (err, cursor, callback) ->
 	if (err)
-		console.error(err.stack);
+		console.error(err.stack)
+		throw err 
 
 	if ('function' is typeof callback) 
 		cursor.toArray (err, items)-> 
 			if (err) 
-				console.error(err.stack);
+				console.error(err.stack)
+				throw err 
 			callback(items);
 	else return cursor.toArray();
 
