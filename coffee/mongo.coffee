@@ -29,6 +29,9 @@ data.db.open = (mongoInfo, callback) ->
     else
 	    return this;
 
+###
+Close database
+###
 data.db.close = (callback)->
   util.log 'Close database'
   if data.db.db 
@@ -39,6 +42,9 @@ data.db.close = (callback)->
         throw err
 			if 'function' is typeof callback then callback()  
 
+###
+Check if the database is closed or not
+###
 data.db.isClosed = ()->
   not data.db.db
 
@@ -53,7 +59,10 @@ Remove all documents in the collection specified
 ###  
 data.db.remove = (collection, callback) -> 
 	data.db.collectionOperation(collection, 'remove', callback);
-	
+
+###
+Common operation for collections
+###	
 data.db.collectionOperation = (collection, operation, query, callback) ->
   @db.collection collection, (err, collection) ->
     if err
@@ -66,6 +75,9 @@ data.db.collectionOperation = (collection, operation, query, callback) ->
 	      throw err
 	    if 'function' is typeof callback then callback(result) else return result			
 
+###
+A util to build the query for finding
+###
 data.db.buildFindQuery = (q, callback) ->	
 	q = {} if not q?
 	
@@ -85,35 +97,40 @@ data.db.buildFindQuery = (q, callback) ->
 	query.sort = q.sort || {};
 
 	if ('function' is typeof callback) then callback(query) else return query;
-
+	
+###
+Count in a collection
+###
 data.db.count = (collection, query, callback) -> 
   data.db.collectionOperation(collection, 'count', query, callback)
 
 
 
 data.db.distinct = (collection, field, query, callback) ->
-	this.db.collection(collection, (err, collection) ->
+	this.db.collection collection, (err, collection) ->
 		if err
 	    console.error(err.stack)
 	    throw err 
 
-		collection.distinct(field, query, (err, result)-> 
+		collection.distinct field, query, (err, result)-> 
 			if err
 	      console.error(err.stack)
 	      throw err 
 			if ('function' is typeof callback) then callback(result) else return result
-		);
-	);
 
+###
+Find in a collection, note that the queryArgs should follow some rules
+@queryArgs arguments for finding.
+###
 data.db.find = (collection, queryArgs, callback) ->
   @buildFindQuery queryArgs,(query)->
 #      console.info query;
-      @db.collection(collection, (err, collection) ->
+      @db.collection collection, (err, collection) ->
         if (err) 
 	        console.error(err.stack)
 	        throw err 
 
-        collection.find(query.query, query.field, query.skip, query.limit, (err, cursor) -> 
+        collection.find query.query, query.field, query.skip, query.limit, (err, cursor) -> 
 	        if (err) 
 		        console.error(err.stack)
 		        throw err 
@@ -124,9 +141,6 @@ data.db.find = (collection, queryArgs, callback) ->
 	          data.onFindCursor(err, cursor, callback)
 	        else 
 	          return data.onFindCursor(err, cursor);
-        );
-      );
-
 
 data.db.findOne = (collection, query, callback)->
 	query.limit = 1;
