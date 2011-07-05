@@ -57,9 +57,8 @@ tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)
 	# todo check if the _id is already exist, if it is, return directly and no need to save it into db;	
 tracker.mPrivate.saveRecord = (record, callback)-> 
   tracker.mPrivate.getAppInfo record, (app)->
-	  tracker.mPrivate.saveApp app, (app) -> 
+	  tracker.mPrivate.saveApp app, (result) -> 
 	    console.log 'app saved'
-	    console.log app
 		  #record._id = 1; // mark the id to 1, as id for each record is not important
 		  record.app_id = app._id;
 		  delete record.platform;
