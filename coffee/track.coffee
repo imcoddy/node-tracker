@@ -26,22 +26,8 @@ tracker.mPublic.handleRequest = (req, callback) ->
 			callback(record)
 		else
 		  record
-
-tracker.mPrivate.find = (collection, query, callback) ->
-	db.find(collection, query, callback);	
-
-tracker.mPrivate.distinct = (collection, field, query, callback) ->
-	db.distinct(collection, field, query, callback);	
-	
-tracker.mPrivate.save = (collection, document, callback) ->
-	db.save(collection, document, callback);	
-#tracker.mPrivate.find = db.find
-#tracker.mPrivate.distinct = db.distinct
-#tracker.mPrivate.save = db.save
 	
 tracker.mPublic.getAllAppIDs = (callback) ->
-  console.log 'in tracker'
-  console.log db
   tracker.mPrivate.distinct('apps','app_id',{},callback)
 
 tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)-> 
@@ -137,5 +123,13 @@ tracker.mPrivate.openDB = (callback)->
     db.open({dbName: APP_CONFIG.DATABASE.DB_NAME}, callback)
   if typeof callback is 'function'
     callback()
+tracker.mPrivate.find = (collection, query, callback) ->
+	db.find(collection, query, callback);	
 
+tracker.mPrivate.distinct = (collection, field, query, callback) ->
+  db.distinct(collection, field, query, callback);	
+	
+tracker.mPrivate.save = (collection, document, callback) ->
+	db.save(collection, document, callback);	
+	
 tracker.mPrivate.openDB()
