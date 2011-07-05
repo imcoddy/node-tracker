@@ -133,8 +133,9 @@ tracker.mPrivate.closeDB =()->
 
 tracker.mPrivate.openDB = (callback)->
   if db.isClosed()
-  #  console.log 'Open database in track'
-    db.open
-	    dbName: APP_CONFIG.DATABASE.DB_NAME, callback
+    console.log 'Open database in track'
+    db.open({dbName: APP_CONFIG.DATABASE.DB_NAME}, callback)
+  if typeof callback is 'function'
+    callback()
 
 tracker.mPrivate.openDB()
