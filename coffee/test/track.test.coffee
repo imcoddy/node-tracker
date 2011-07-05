@@ -47,60 +47,30 @@ module.exports =
       platform: 'platform'
       tag:'tag'
       
-    assert.eql(false,app.checkRecord(record))    
-#        query = {};  
-#        collection = 'test'
-#        app.remove collection, ->
-#          app.count(collection,query,(result)->assert.eql(0,result))
-#        
-#        app.count('apps',{},(result)->assert.eql(2,result))
-#        
-#        collection = 'records'
-#        app.count(collection,query,(result)->assert.eql(9,result))
-#        
-#        query = {tag:'login'}
-#        app.count(collection,query,(result)->assert.eql(7,result))
-#        
-#        query = {tag:'register'}
-#        app.count(collection,query,(result)->assert.eql(2,result))
-#        
-#        query = {tag:'Login'}
-#        app.count(collection,query,(result)->assert.eql(0,result))        
-#     
-#        console.log 'test find'
-#        query = {}
-#        collection ='records'
-#        app.find(collection,query, (result)->assert.length(result,9))
-#        
-#        query = {query:{tag:'login'}}
-#        app.find(collection,query, (result)->assert.length(result,7))
-#        
-#        query = {query:{app_id:'facebook_valley'}}
-#        app.find(collection,query, (result)->assert.length(result,1))
-#        
-#        query = {query:{tag:'login',app_id:'facebook_valley'}}
-#        app.find(collection,query, (result)->assert.length(result,1))
-#        
-#        query = {query:{tag:'login', app_id:'xiaonei_valley'}}
-#        app.find(collection,query, (result)->assert.length(result,6))
-#                
-#        query = {query:{app_id:'NO_SUCH_ID'}}
-#        app.find(collection,query, (result)->assert.length(result,0))
-#        
-#        console.log 'test find one'
-#        collection ='records'
-#        query={}
-#        app.findOne collection,query, (result)->assert.length(result,1)
-#        
-#        query={app_id:'facebook_valley'}
-#        app.findOne collection,query, (result)->
-#          assert.length(result,1)
-#          assert.eql 'facebook_valley',result[0].app_id          
-#        
-#        console.log 'test distinct'
-#        collection = 'apps'
-#        field = 'platform'
-#        query = {}        
+    assert.eql(false,app.checkRecord(record))   
+
+  'test wrapRecord':()->
+    app.openDB ()->
+      console.log 'test wrapRecord'     
+      record = 
+        app_name: 'app'
+        platform: 'platform'
+        tag:'tag'
+        
+      req = 
+        headers 
+          'user-agent':1
+        
+      record = app.wrapRecord(record, req);
+      console.log record
+
+  'test getAllAppIDs':()->
+    app.openDB ()->
+      console.log 'test getAllAppIDs'     
+      app.getAllAppIDs (result)->
+        console.log 'getAllAppIDs result'
+        console.log result
+
 #        app.distinct collection, field, query, (result)->
 #          assert.length(result,2)
 #          assert.includes result,'facebook'

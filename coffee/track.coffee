@@ -20,24 +20,29 @@ tracker.mPublic.handleRequest = (req, callback) ->
 	  console.log 'Invalid request, it should contain platform app_name and tag'		
 	  console.log record
 	else 
-		record = tracker.wrapRecord(record, req);
-		tracker.saveRecord(record);
+		record = tracker.mPrivate.wrapRecord(record, req);
+		tracker.mPrivate.saveRecord(record);
 		if 'function' is typeof callback
 			callback(record)
 		else
 		  record
 
-#tracker.mPublic.find = (collection, query, callback) ->
-#	db.find(collection, query, callback);	
+tracker.mPrivate.find = (collection, query, callback) ->
+	db.find(collection, query, callback);	
 
-#tracker.mPublic.distinct = (collection, field, query, callback) ->
-#	db.distinct(collection, field, query, callback);	
-tracker.mPrivate.find = db.find
-tracker.mPrivate.distinct = db.distinct
-tracker.mPrivate.save = db.save
+tracker.mPrivate.distinct = (collection, field, query, callback) ->
+	db.distinct(collection, field, query, callback);	
+	
+tracker.mPrivate.save = (collection, document, callback) ->
+	db.save(collection, document, callback);	
+#tracker.mPrivate.find = db.find
+#tracker.mPrivate.distinct = db.distinct
+#tracker.mPrivate.save = db.save
 	
 tracker.mPublic.getAllAppIDs = (callback) ->
-  tracker.distinct('apps','app_id',{},callback)
+  console.log 'in tracker'
+  console.log db
+  tracker.mPrivate.distinct('apps','app_id',{},callback)
 
 tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)-> 
 	query = 
@@ -53,6 +58,8 @@ tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)
 tracker.mPrivate.saveRecord = (record, callback)-> 
   tracker.mPrivate.getAppInfo record, (app)->
 	  tracker.mPrivate.saveApp app, (app) -> 
+	    console.log 'app saved'
+	    console.log app
 		  #record._id = 1; // mark the id to 1, as id for each record is not important
 		  record.app_id = app._id;
 		  delete record.platform;
@@ -82,7 +89,7 @@ tracker.mPrivate.checkRecord = (record) ->
 
 tracker.mPrivate.wrapRecord = (record, req, callback) ->
 	record.UA = req.headers['user-agent'];
-	record.IP = tracker.getClientAddress(req);
+	record.IP = tracker.mPrivate.getClientAddress(req);
 	delete record.noCache;
 
 	if (record.userid? && not record.uid?) 
