@@ -9,12 +9,8 @@ db = require('./mongo');
 tracker = tracker || {};
 tracker.mPublic = exports;
 
+tracker.mPrivate = {}
 tracker.mPrivate = exports;  #for test only#
-
-if db.isClosed()
-#  console.log 'Open database in track'
-  db.open
-	  dbName: APP_CONFIG.DATABASE.DB_NAME,
 
 tracker.mPublic.handleRequest = (req, callback) ->
 	record = tracker.mPrivate.getRecordFromRequest(req);
@@ -77,9 +73,9 @@ tracker.mPrivate.getAppInfo = (record, callback)->
 
 tracker.mPrivate.checkRecord = (record) ->
 	result = true;
-	for i in PROPERTIES
-		if (not record[i]?) 
-			console.error(i + ' is undefined, record ignored.');
+	for property in PROPERTIES
+		if (not record[property]?) 
+			console.error(property + ' is undefined, record ignored.');
 			result = false;
 			break
 	result;
@@ -124,5 +120,15 @@ tracker.mPrivate.getRecordFromRequest = (req) ->
 		record = content.query;	
 	else 
 		record = req.body;
+		
+tracker.mPrivate.closeDB =()->
+  if not db.isClosed()
+    db.close()
 
+tracker.mPrivate.openDB = (callback)->
+  if db.isClosed()
+  #  console.log 'Open database in track'
+    db.open
+	    dbName: APP_CONFIG.DATABASE.DB_NAME, callback
 
+tracker.mPrivate.openDB()
