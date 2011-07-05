@@ -31,23 +31,23 @@ app.get '/post', (req, res) ->
     title: 'Express'
 
 app.post '/test', (req, res) ->
-	tracker.find 'records', {},(result) ->
-		res.send(result);
+  tracker.find 'records', {},(result) ->
+    res.send(result);
 
 app.get '/monitor.do', (req, res) ->
-	console.log 'via get'
-	app.handleRequest req, res
+  console.log 'via get'
+  app.handleRequest req, res
 
 app.post '/monitor.do', (req, res)->
-	console.log 'via post'
-	app.handleRequest req, res
+  console.log 'via post'
+  app.handleRequest req, res
 
 app.handleRequest = (req, res)->
-	tracker.handleRequest(req)
-	res.writeHead(200, {
-		'Content-Type': 'text/plain'
-	})
-	res.end('Message received.\n')
+  tracker.handleRequest(req)
+  res.writeHead(200, {
+    'Content-Type': 'text/plain'
+  })
+  res.end('Message received.\n')
 
     
 app.listen 3000
