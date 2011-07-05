@@ -79,7 +79,6 @@ module.exports =
     
     query = app.buildFindQuery({tag:{uid:1,time:1}});
     assert.eql({tag:{uid:1,time:1}},query.query);
-    console.log query
     
     app.buildFindQuery {tag:'login',uid:'123456'}, (query)->
       assert.eql({tag:'login',uid:'123456'},query.query)
