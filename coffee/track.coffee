@@ -44,7 +44,6 @@ tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)
 tracker.mPrivate.saveRecord = (record, callback)-> 
   tracker.mPrivate.getAppInfo record, (app)->
 	  tracker.mPrivate.saveApp app, (result) -> 
-	    console.log 'app saved'
 		  #record._id = 1; // mark the id to 1, as id for each record is not important
 		  record.app_id = app._id;
 		  delete record.platform;
