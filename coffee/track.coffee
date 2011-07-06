@@ -28,7 +28,7 @@ tracker.mPublic.handleRequest = (req, callback) ->
       record
   
 tracker.mPublic.getAllAppIDs = (callback) ->
-  tracker.mPrivate.distinct('apps','app_id',{},callback)
+  tracker.mPrivate.distinct('apps','_id',{},callback)
 
 tracker.mPublic.findByTagDateRange = (app_id, tag, startDate, endDate, callback)-> 
   query = 
@@ -120,7 +120,7 @@ tracker.mPrivate.openDB = (callback)->
   if db.isClosed()
     console.log 'Open database in track'
     db.open({dbName: APP_CONFIG.DATABASE.DB_NAME}, callback)
-  if typeof callback is 'function'
+  else if typeof callback is 'function'
     callback()
 tracker.mPrivate.find = (collection, query, callback) ->
   db.find(collection, query, callback);  

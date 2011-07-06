@@ -43,16 +43,19 @@ module.exports =
         
       record = app.wrapRecord(record, req);
 
-#  'test getAllAppIDs':()->
-#    app.openDB ()->
-#      console.log 'test getAllAppIDs'     
-#      app.getAllAppIDs (result)->
-#        console.log 'getAllAppIDs result'
-#        assert.length(result, 2)
-#        console.log result
-#        assert.includes result, 'xiaonei_valley'
+  'test getAllAppIDs':()->
+    app.openDB()
+    delay 10, ->
+      console.log 'test getAllAppIDs'     
+      app.getAllAppIDs (result)->
+        console.log 'getAllAppIDs result'
+        console.log result
+        assert.length(result, 2)
+        console.log result
+        assert.includes result, 'xiaonei_valley'
   
-  'test teardown':()->
-    console.log 'Closing'
-    delay 1000,->app.closeDB()
+  'test teardown':()->    
+    delay 1000,->
+      console.log 'Closing'
+      app.closeDB()
 
