@@ -3,3 +3,39 @@ svn:wc:ra_dav:version-url
 V 49
 /svn/cruise/!svn/ver/1169/trunk/nodecoffee/coffee
 END
+constants.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/constants.coffee
+END
+mongo.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/mongo.coffee
+END
+app.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/app.coffee
+END
+track.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/track.coffee
+END
+config.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/config.coffee
+END
+temp.coffee
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/coffee/temp.coffee
+END

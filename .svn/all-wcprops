@@ -7,6 +7,12 @@ svn:wc:ra_dav:version-url
 V 42
 /svn/cruise/!svn/ver/1170/trunk/nodecoffee
 END
+compile.sh
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cruise/!svn/ver/1171/trunk/nodecoffee/compile.sh
+END
 package.json
 K 25
 svn:wc:ra_dav:version-url
